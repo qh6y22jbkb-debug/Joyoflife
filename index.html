@@ -527,7 +527,7 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
   <div class="wrap over">
     <div class="over__photo reveal">
       <!-- VERVANG DIT: jouw profielfoto (nu echte foto uit /kunstlab) -->
-      <img src="kunstlab/web/jop.jpg" alt="Jop Copal">
+      <img src="Jop.jpg" alt="Jop Copal">
       <div class="over__badge">Muzikant &amp; arrangeur</div>
     </div>
     <div class="over__text reveal d1">
@@ -648,7 +648,7 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
 
       <!-- VERVANG DIT: jouw audiobestand (nu echte opname uit /kunstlab) -->
       <audio id="audio" preload="metadata">
-        <source src="kunstlab/Musical%20Ding.mp3" type="audio/mpeg">
+        <source src="Musical%20Ding.mp3" type="audio/mpeg">
         <!-- placeholder-alternatief: https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3 -->
       </audio>
     </div>
@@ -685,7 +685,7 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
           Blader door alle pagina's
         </button>
         <!-- VERVANG DIT: pad naar jouw volledige partituur-PDF -->
-        <a class="btn-part btn-part--pdf" href="kunstlab/Joy%20of%20life%20-%20Full_score.pdf" target="_blank" rel="noopener">
+        <a class="btn-part btn-part--pdf" href="Joy%20of%20life%20-%20Full_score.pdf" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
           Open PDF
         </a>
@@ -699,7 +699,7 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
   <div class="wrap over">
     <div class="over__photo reveal">
       <!-- Foto van de maker / componist (echte foto uit /kunstlab) -->
-      <img src="kunstlab/web/ron.jpg" alt="Ron van Riel, componist">
+      <img src="Ron.jpg" alt="Ron van Riel, componist">
       <div class="over__badge">Componist</div>
     </div>
     <div class="over__text reveal d1">
@@ -777,7 +777,7 @@ const scores = [
 ];
 const rail = document.getElementById('partRail');
 scores.forEach(s => {
-  const src = `kunstlab/scores/score-${s.n}.png`;
+  const src = `score-${s.n}.png`;
   const card = document.createElement('div');
   card.className = 'partituur';
   card.innerHTML = `
@@ -847,7 +847,7 @@ document.querySelectorAll('.partituur__groot').forEach(btn => {
 const TOTAAL_PAGINAS = 18;
 const allePaginas = Array.from({ length: TOTAAL_PAGINAS }, (_, i) => {
   const nr = String(i + 1).padStart(2, '0');
-  return { src: `kunstlab/scores/score-${nr}.png`, cap: `Volledige partituur — pagina ${i + 1} van ${TOTAAL_PAGINAS}` };
+  return { src: `score-${nr}.png`, cap: `Volledige partituur — pagina ${i + 1} van ${TOTAAL_PAGINAS}` };
 });
 document.getElementById('alleParts').addEventListener('click', () => openLightbox(allePaginas, 0, true));
 
