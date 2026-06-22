@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joy of Life — Kunstlab van Jop Copal</title>
+
+<!-- Google Fonts: Playfair Display (expressieve koppen) + Outfit (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   KLEURENPALET — warm & krachtig: goud, diep blauw, terracotta
+   ============================================================ */
+:root{
+  --blauw-diep:   #0e1b3a;   /* diep nachtblauw  */
+  --blauw-2:      #16264f;
+  --goud:         #e8b13a;   /* warm goud        */
+  --goud-licht:   #f7d488;
+  --terracotta:   #d2602e;   /* terracotta accent*/
+  --terracotta-2: #b8451d;
+  --cr, --creme:  #f6efe2;
+  --creme:        #f6efe2;   /* warme achtergrond*/
+  --creme-2:      #efe3cc;
+  --inkt:         #221a12;
+  --tekst:        #2a2418;
+
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'Outfit', system-ui, -apple-system, sans-serif;
+
+  --schaduw: 0 18px 50px -18px rgba(14,27,58,.45);
+  --radius: 18px;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; scroll-padding-top:84px; overflow-x:hidden; max-width:100%; }
+body{
+  font-family:var(--sans);
+  color:var(--tekst);
+  background:var(--creme);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+section{ position:relative; }
+
+h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
+
+/* ============================================================
+   NAVIGATIE — sticky bovenbalk
+   ============================================================ */
+.nav{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px clamp(18px,5vw,56px);
+  background:rgba(14,27,58,.55);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(232,177,58,.18);
+  transition:background .4s ease, padding .4s ease;
+}
+.nav.scrolled{ background:rgba(14,27,58,.92); padding:9px clamp(18px,5vw,56px); }
+.nav__logo{
+  font-family:var(--serif); font-weight:900; font-size:1.35rem;
+  color:var(--creme); letter-spacing:.5px;
+}
+.nav__logo span{ color:var(--goud); }
+.nav__links{ display:flex; gap:6px; list-style:none; }
+.nav__links a{
+  color:var(--creme); font-weight:500; font-size:.95rem;
+  padding:8px 14px; border-radius:30px;
+  position:relative; transition:color .25s ease, background .25s ease;
+}
+.nav__links a:hover{ color:var(--goud-licht); background:rgba(232,177,58,.1); }
+
+.nav__toggle{
+  display:none; flex-direction:column; gap:5px; cursor:pointer;
+  background:none; border:0; padding:6px;
+}
+.nav__toggle span{ width:26px; height:2px; background:var(--creme); border-radius:2px; transition:.3s; }
+
+@media (max-width:860px){
+  .nav__toggle{ display:flex; }
+  .nav__links{
+    position:absolute; top:100%; right:14px; left:auto;
+    flex-direction:column; gap:0;
+    background:rgba(14,27,58,.98); border:1px solid rgba(232,177,58,.2);
+    border-radius:14px; padding:10px; min-width:170px;
+    max-width:calc(100vw - 28px);
+    transform:translateY(-12px) scale(.96); opacity:0; pointer-events:none;
+    transition:.28s ease;
+  }
+  .nav__links.open{ transform:none; opacity:1; pointer-events:auto; }
+  .nav__links a{ display:block; white-space:nowrap; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:120px 22px 80px;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(210,96,46,.35), transparent 60%),
+    radial-gradient(900px 500px at 10% 110%, rgba(232,177,58,.30), transparent 60%),
+    linear-gradient(160deg, var(--blauw-diep), var(--blauw-2) 70%, #0a142b);
+  color:var(--creme);
+  overflow:hidden;
+}
+/* zwevende muzieknoten / blobs als eye-catcher */
+.hero__blob{
+  position:absolute; border-radius:50%; filter:blur(8px); opacity:.5;
+  pointer-events:none; mix-blend-mode:screen;
+}
+.b1{ width:340px; height:340px; background:radial-gradient(circle,var(--goud),transparent 70%);
+     top:2%; left:-120px; opacity:.32; animation:drift 16s ease-in-out infinite; }
+.b2{ width:420px; height:420px; background:radial-gradient(circle,var(--terracotta),transparent 70%);
+     bottom:-80px; right:-80px; animation:drift 20s ease-in-out infinite reverse; }
+@keyframes drift{
+  0%,100%{ transform:translate(0,0) scale(1); }
+  50%{ transform:translate(40px,-30px) scale(1.12); }
+}
+.note{
+  position:absolute; color:rgba(232,177,58,.55); font-size:2.4rem;
+  animation:floatNote linear infinite; user-select:none; pointer-events:none;
+}
+@keyframes floatNote{
+  0%{ transform:translateY(20vh) rotate(0deg); opacity:0; }
+  10%{ opacity:.8; }
+  90%{ opacity:.8; }
+  100%{ transform:translateY(-110vh) rotate(40deg); opacity:0; }
+}
+
+.hero__kicker{
+  font-family:var(--sans); text-transform:uppercase; letter-spacing:.45em;
+  font-size:.8rem; color:var(--goud-licht); margin-bottom:24px;
+  opacity:0; animation:fadeUp 1s .2s forwards;
+}
+.hero__title{
+  font-size:clamp(3.2rem, 12vw, 9rem);
+  line-height:1.18; margin-bottom:6px; padding:.06em .12em .18em;
+  background:linear-gradient(120deg,#fff 0%,#fff 18%,var(--goud-licht) 50%,var(--terracotta) 95%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  /* glyph-vormige schaduw zorgt voor contrast tegen de gouden gloed erachter */
+  filter:drop-shadow(0 3px 16px rgba(8,12,26,.65));
+  opacity:0; animation:fadeUp 1s .35s forwards;
+}
+.hero__title em{ font-style:italic; font-weight:600; }
+.hero__sub{
+  max-width:680px; font-size:clamp(1.05rem,2.4vw,1.4rem);
+  font-family:var(--serif); font-style:italic; font-weight:500;
+  color:#e9e0cf; margin:22px auto 0; line-height:1.4;
+  opacity:0; animation:fadeUp 1s .55s forwards;
+}
+.hero__sub::before, .hero__sub::after{ content:'“'; color:var(--goud); }
+.hero__sub::after{ content:'”'; }
+.hero__cta{
+  margin-top:42px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+  opacity:0; animation:fadeUp 1s .75s forwards;
+}
+.btn{
+  font-family:var(--sans); font-weight:600; font-size:1rem;
+  padding:14px 30px; border-radius:40px; cursor:pointer; border:0;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.btn--goud{ background:linear-gradient(120deg,var(--goud),var(--terracotta)); color:#1c1205;
+  box-shadow:0 12px 30px -10px rgba(232,177,58,.7); }
+.btn--lijn{ background:transparent; color:var(--creme); border:1.5px solid rgba(246,239,226,.4); }
+.btn:hover{ transform:translateY(-3px); }
+.btn--lijn:hover{ border-color:var(--goud); color:var(--goud-licht); }
+
+.hero__scroll{
+  position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+  color:rgba(246,239,226,.7); font-size:.8rem; letter-spacing:.2em; text-transform:uppercase;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  opacity:0; animation:fadeUp 1s 1s forwards;
+}
+.hero__scroll i{ width:1px; height:34px; background:linear-gradient(var(--goud),transparent);
+  animation:scrollPulse 1.8s ease-in-out infinite; }
+@keyframes scrollPulse{ 0%,100%{ transform:scaleY(.4); opacity:.4;} 50%{ transform:scaleY(1); opacity:1;} }
+
+@keyframes fadeUp{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:none;} }
+
+/* ============================================================
+   ALGEMENE SECTIE-OPMAAK
+   ============================================================ */
+.section{ padding:clamp(70px,11vw,140px) clamp(20px,6vw,90px); }
+.section--blauw{ background:linear-gradient(170deg,var(--blauw-diep),var(--blauw-2)); color:var(--creme); }
+.wrap{ max-width:1180px; margin:0 auto; }
+.eyebrow{
+  display:inline-block; font-weight:600; letter-spacing:.3em; text-transform:uppercase;
+  font-size:.78rem; color:var(--terracotta); margin-bottom:16px;
+}
+.section--blauw .eyebrow{ color:var(--goud); }
+.title-lg{ font-size:clamp(2.2rem,6vw,4rem); margin-bottom:24px; }
+.title-lg .accent{ color:var(--terracotta); font-style:italic; font-weight:600; }
+.section--blauw .title-lg .accent{ color:var(--goud-licht); }
+.lead{ font-size:1.12rem; max-width:62ch; }
+
+/* ============================================================
+   OVER MIJ
+   ============================================================ */
+.over{
+  display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,6vw,80px); align-items:center;
+}
+.over__photo{ position:relative; }
+.over__photo img{
+  width:100%; border-radius:var(--radius); box-shadow:var(--schaduw);
+  aspect-ratio:4/5; object-fit:cover;
+}
+.over__photo::before{
+  content:''; position:absolute; inset:18px -18px -18px 18px; z-index:-1;
+  border-radius:var(--radius);
+  background:linear-gradient(135deg,var(--goud),var(--terracotta));
+  opacity:.85;
+}
+.over__badge{
+  position:absolute; bottom:-22px; right:-10px;
+  background:var(--creme); color:var(--blauw-diep);
+  font-family:var(--serif); font-weight:700; font-style:italic;
+  padding:14px 22px; border-radius:14px; box-shadow:var(--schaduw); font-size:1.05rem;
+}
+.over__text p{ margin-bottom:18px; }
+.over__sign{ font-family:var(--serif); font-style:italic; font-size:1.4rem; color:var(--terracotta); margin-top:8px; }
+
+@media (max-width:780px){
+  .over{ grid-template-columns:1fr; }
+  .over__photo{ max-width:420px; margin:0 auto 30px; }
+}
+
+/* DE MAKER — foto rechts, donkere achtergrond */
+.maker .over__photo{ order:2; }
+.maker .over__photo::before{ inset:18px 18px -18px -18px; } /* gloed naar linksonder */
+.maker .over__badge{ left:-10px; right:auto; }
+@media (max-width:780px){
+  .maker .over__photo{ order:0; }
+  .maker .over__badge{ left:auto; right:-10px; }
+}
+
+/* ============================================================
+   LEERVRAAG & PROCES
+   ============================================================ */
+.leervraag-card{
+  background:linear-gradient(135deg,rgba(232,177,58,.14),rgba(210,96,46,.14));
+  border:1px solid rgba(232,177,58,.35);
+  border-radius:24px; padding:clamp(28px,5vw,54px); text-align:center;
+  margin-bottom:64px; position:relative; overflow:hidden;
+}
+.leervraag-card .qmark{
+  position:absolute; font-family:var(--serif); font-size:18rem; line-height:1;
+  color:rgba(232,177,58,.12); top:-60px; right:10px; pointer-events:none;
+}
+.leervraag-card h3{
+  font-size:clamp(1.6rem,4vw,2.8rem); font-style:italic; font-weight:700;
+  color:var(--goud-licht); max-width:20ch; margin:0 auto; position:relative;
+}
+.proces{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:26px; }
+.stap{
+  background:rgba(255,255,255,.04); border:1px solid rgba(246,239,226,.12);
+  border-radius:var(--radius); padding:30px 26px;
+  transition:transform .35s ease, border-color .35s ease, background .35s ease;
+}
+.stap:hover{ transform:translateY(-8px); border-color:var(--goud); background:rgba(232,177,58,.07); }
+.stap__icoon{
+  width:58px; height:58px; border-radius:16px; display:grid; place-items:center;
+  background:linear-gradient(135deg,var(--goud),var(--terracotta));
+  margin-bottom:18px; box-shadow:0 10px 24px -10px rgba(232,177,58,.7);
+}
+.stap__icoon svg{ width:30px; height:30px; stroke:#1c1205; fill:none; stroke-width:1.8; }
+.stap__nr{ font-family:var(--serif); font-size:.85rem; color:var(--goud); letter-spacing:.2em; }
+.stap h4{ font-family:var(--serif); font-size:1.3rem; margin:6px 0 10px; color:var(--creme); }
+.stap p{ font-size:.97rem; color:#d6cdbb; }
+
+/* ============================================================
+   GALERIJ — masonry + lightbox
+   ============================================================ */
+.galerij{ columns:3; column-gap:18px; }
+@media (max-width:900px){ .galerij{ columns:2; } }
+@media (max-width:560px){ .galerij{ columns:1; } }
+.galerij figure{
+  break-inside:avoid; margin:0 0 18px; position:relative; cursor:pointer;
+  border-radius:var(--radius); overflow:hidden; box-shadow:var(--schaduw);
+}
+.galerij img{ width:100%; transition:transform .6s ease; }
+.galerij figure:hover img{ transform:scale(1.07); }
+.galerij figcaption{
+  position:absolute; inset:auto 0 0 0; padding:30px 18px 16px;
+  background:linear-gradient(transparent,rgba(14,27,58,.85));
+  color:var(--creme); font-weight:500; font-size:.95rem;
+  opacity:0; transform:translateY(10px); transition:.35s ease;
+}
+.galerij figure:hover figcaption{ opacity:1; transform:none; }
+.galerij figure::after{
+  content:'＋'; position:absolute; top:14px; right:16px;
+  width:38px; height:38px; border-radius:50%; display:grid; place-items:center;
+  background:rgba(232,177,58,.9); color:#1c1205; font-size:1.3rem; font-weight:700;
+  opacity:0; transform:scale(.6); transition:.35s ease;
+}
+.galerij figure:hover::after{ opacity:1; transform:scale(1); }
+
+/* lightbox */
+.lightbox{
+  position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center;
+  background:rgba(8,12,26,.92); backdrop-filter:blur(8px);
+  opacity:0; pointer-events:none; transition:opacity .4s ease;
+}
+.lightbox.open{ opacity:1; pointer-events:auto; }
+.lightbox__img{
+  max-width:88vw; max-height:82vh; border-radius:12px;
+  box-shadow:0 30px 80px -20px #000;
+  transform:scale(.85); transition:transform .4s cubic-bezier(.2,.9,.3,1.2);
+}
+.lightbox.open .lightbox__img{ transform:scale(1); }
+.lightbox__cap{
+  position:absolute; bottom:26px; left:0; right:0; text-align:center;
+  color:var(--creme); font-family:var(--serif); font-style:italic; font-size:1.05rem;
+}
+.lb-btn{
+  position:absolute; background:rgba(246,239,226,.1); border:1px solid rgba(246,239,226,.25);
+  color:var(--creme); width:54px; height:54px; border-radius:50%; cursor:pointer;
+  font-size:1.6rem; display:grid; place-items:center; transition:.25s ease;
+}
+.lb-btn:hover{ background:var(--goud); color:#1c1205; border-color:var(--goud); }
+.lb-close{ top:24px; right:24px; }
+.lb-prev{ left:24px; top:50%; transform:translateY(-50%); }
+.lb-next{ right:24px; top:50%; transform:translateY(-50%); }
+@media (max-width:560px){ .lb-prev{ left:10px; } .lb-next{ right:10px; } .lb-btn{ width:46px; height:46px; } }
+
+/* ============================================================
+   MUZIEKSPELER
+   ============================================================ */
+.speler{
+  max-width:720px; margin:0 auto;
+  background:linear-gradient(150deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(232,177,58,.25);
+  border-radius:26px; padding:clamp(26px,5vw,44px);
+  box-shadow:var(--schaduw); backdrop-filter:blur(6px);
+}
+.speler__top{ display:flex; align-items:center; gap:22px; margin-bottom:26px; }
+.speler__cover{
+  position:relative; width:96px; height:96px; flex:0 0 auto; border-radius:50%;
+  background:conic-gradient(from 0deg,var(--goud),var(--terracotta),var(--goud));
+  display:grid; place-items:center;
+}
+.speler__cover::after{
+  content:''; position:absolute; inset:8px; border-radius:50%;
+  background:var(--blauw-diep); border:2px solid rgba(14,27,58,.8);
+}
+.speler__cover .disc{ position:relative; z-index:1; font-size:1.8rem; }
+.speler.playing .speler__cover{ animation:spin 6s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+/* pulserende ring tijdens spelen */
+.speler__cover .ring{
+  position:absolute; inset:-6px; border-radius:50%; border:2px solid var(--goud);
+  opacity:0;
+}
+.speler.playing .speler__cover .ring{ animation:pulseRing 2s ease-out infinite; }
+@keyframes pulseRing{ 0%{ transform:scale(1); opacity:.7; } 100%{ transform:scale(1.5); opacity:0; } }
+
+.speler__meta h4{ font-family:var(--serif); font-size:1.45rem; color:var(--creme); }
+.speler__meta span{ color:var(--goud-licht); font-size:.95rem; }
+
+.golf{ width:100%; height:70px; margin-bottom:18px; display:block; }
+
+.speler__bar{ display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+.tijd{ font-variant-numeric:tabular-nums; font-size:.85rem; color:#cabf9f; min-width:42px; text-align:center; }
+.voortgang{
+  flex:1; height:8px; border-radius:6px; background:rgba(246,239,226,.18);
+  position:relative; cursor:pointer;
+}
+.voortgang__fill{
+  position:absolute; inset:0 auto 0 0; width:0%;
+  border-radius:6px; background:linear-gradient(90deg,var(--goud),var(--terracotta));
+}
+.voortgang__knop{
+  position:absolute; top:50%; left:0%; width:16px; height:16px; border-radius:50%;
+  background:var(--creme); transform:translate(-50%,-50%); box-shadow:0 2px 8px rgba(0,0,0,.4);
+  transition:transform .15s ease;
+}
+.voortgang:hover .voortgang__knop{ transform:translate(-50%,-50%) scale(1.25); }
+
+.speler__controls{ display:flex; align-items:center; justify-content:center; gap:26px; }
+.afspeel{
+  width:72px; height:72px; border-radius:50%; border:0; cursor:pointer;
+  background:linear-gradient(135deg,var(--goud),var(--terracotta));
+  display:grid; place-items:center; box-shadow:0 14px 34px -10px rgba(232,177,58,.75);
+  transition:transform .2s ease;
+}
+.afspeel:hover{ transform:scale(1.07); }
+.afspeel svg{ width:30px; height:30px; fill:#1c1205; }
+.volume{ display:flex; align-items:center; gap:10px; color:#cabf9f; }
+.volume svg{ width:22px; height:22px; fill:var(--goud-licht); }
+.volume input[type=range]{
+  -webkit-appearance:none; appearance:none; width:110px; height:6px; border-radius:5px;
+  background:rgba(246,239,226,.2); cursor:pointer;
+}
+.volume input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:15px; height:15px; border-radius:50%; background:var(--goud);
+}
+.volume input[type=range]::-moz-range-thumb{ width:15px; height:15px; border:0; border-radius:50%; background:var(--goud); }
+@media (max-width:560px){
+  .speler__top{ flex-direction:column; text-align:center; }
+  .speler__controls{ flex-wrap:wrap; gap:18px; }
+}
+
+/* ============================================================
+   PARTITUREN — horizontaal scrollbaar
+   ============================================================ */
+.part-rail{
+  display:flex; gap:24px; overflow-x:auto; padding:10px 4px 30px;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+}
+.part-rail::-webkit-scrollbar{ height:8px; }
+.part-rail::-webkit-scrollbar-thumb{ background:linear-gradient(var(--goud),var(--terracotta)); border-radius:8px; }
+.part-rail::-webkit-scrollbar-track{ background:var(--creme-2); border-radius:8px; }
+.partituur{
+  flex:0 0 auto; width:min(320px,78vw); scroll-snap-align:center;
+  background:#fff; border-radius:16px; overflow:hidden; box-shadow:var(--schaduw);
+  display:flex; flex-direction:column;
+}
+.partituur__img{ position:relative; background:#faf6ee; }
+.partituur__img img{ width:100%; aspect-ratio:3/4; object-fit:cover; object-position:top; }
+.partituur__groot{
+  position:absolute; bottom:12px; right:12px;
+  background:rgba(14,27,58,.85); color:var(--creme); border:0; cursor:pointer;
+  font-family:var(--sans); font-weight:600; font-size:.82rem;
+  padding:9px 14px; border-radius:30px; display:flex; align-items:center; gap:6px;
+  transition:.25s ease;
+}
+.partituur__groot:hover{ background:var(--goud); color:#1c1205; }
+.partituur__groot svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
+.partituur__body{ padding:18px 20px 22px; }
+.partituur__body h4{ font-family:var(--serif); font-size:1.2rem; color:var(--blauw-diep); margin-bottom:6px; }
+.partituur__body p{ font-size:.92rem; color:#5b5240; }
+.part-hint{ font-size:.88rem; color:#7a6f59; margin-top:6px; display:flex; align-items:center; gap:8px; }
+.part-hint svg{ width:18px; height:18px; stroke:var(--terracotta); fill:none; stroke-width:2; }
+
+/* volledige partituur */
+.volledig{
+  margin-top:50px; text-align:center;
+  background:linear-gradient(135deg,rgba(232,177,58,.12),rgba(210,96,46,.10));
+  border:1px solid rgba(210,96,46,.25); border-radius:22px;
+  padding:clamp(28px,5vw,46px);
+}
+.volledig h3{ font-family:var(--serif); font-size:clamp(1.5rem,4vw,2.1rem); color:var(--blauw-diep); margin-bottom:10px; }
+.volledig h3 em{ color:var(--terracotta); font-style:italic; }
+.volledig p{ color:#5b5240; max-width:54ch; margin:0 auto 26px; }
+.volledig__acties{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+.btn-part{
+  font-family:var(--sans); font-weight:600; font-size:1rem; cursor:pointer;
+  padding:14px 28px; border-radius:40px; display:inline-flex; align-items:center; gap:10px;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.btn-part svg{ width:20px; height:20px; }
+.btn-part--vol{ border:0; background:linear-gradient(120deg,var(--goud),var(--terracotta)); color:#1c1205;
+  box-shadow:0 12px 30px -12px rgba(210,96,46,.7); }
+.btn-part--vol svg{ stroke:#1c1205; fill:none; stroke-width:2; }
+.btn-part--pdf{ background:transparent; color:var(--blauw-diep); border:1.5px solid rgba(14,27,58,.3); }
+.btn-part--pdf svg{ stroke:currentColor; fill:none; stroke-width:1.8; }
+.btn-part:hover{ transform:translateY(-3px); }
+.btn-part--pdf:hover{ border-color:var(--terracotta); color:var(--terracotta); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  background:var(--blauw-diep); color:var(--creme); text-align:center;
+  padding:60px 22px 40px;
+}
+.footer__logo{ font-family:var(--serif); font-weight:900; font-size:2rem; }
+.footer__logo span{ color:var(--goud); }
+.footer p{ color:#b9b09c; margin-top:10px; font-size:.92rem; }
+.footer__noot{ color:var(--goud); font-size:1.4rem; margin-top:18px; }
+
+/* ============================================================
+   SCROLL-ANIMATIES (Intersection Observer)
+   ============================================================ */
+.reveal{ opacity:0; transform:translateY(46px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+.reveal.in{ opacity:1; transform:none; }
+.reveal.d1{ transition-delay:.12s; } .reveal.d2{ transition-delay:.24s; }
+.reveal.d3{ transition-delay:.36s; } .reveal.d4{ transition-delay:.48s; }
+@media (prefers-reduced-motion:reduce){
+  .reveal{ opacity:1 !important; transform:none !important; }
+  *{ animation:none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVIGATIE ================= -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav__logo">Joy of <span>Life</span></a>
+  <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav__links" id="navLinks">
+    <li><a href="#over">Over mij</a></li>
+    <li><a href="#leervraag">Leervraag</a></li>
+    <li><a href="#muziek">Muziek</a></li>
+    <li><a href="#partituren">Partituren</a></li>
+    <li><a href="#maker">De maker</a></li>
+  </ul>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="hero">
+  <div class="hero__blob b1"></div>
+  <div class="hero__blob b2"></div>
+  <!-- zwevende noten worden via JS toegevoegd -->
+
+  <p class="hero__kicker">Kunstlab · Een muzikaal onderzoek</p>
+  <h1 class="hero__title">Joy of <em>Life</em></h1>
+  <p class="hero__sub">Hoe breng ik mijn eigen geluksgevoel terug in een arrangement volgens mijn eigen visie op muziek?</p>
+  <div class="hero__cta">
+    <a href="#muziek" class="btn btn--goud">▶ Luister het fragment</a>
+    <a href="#over" class="btn btn--lijn">Mijn verhaal</a>
+  </div>
+
+  <div class="hero__scroll"><span>Scroll</span><i></i></div>
+</header>
+
+<!-- ================= OVER MIJ ================= -->
+<section class="section" id="over">
+  <div class="wrap over">
+    <div class="over__photo reveal">
+      <!-- VERVANG DIT: jouw profielfoto (nu echte foto uit /kunstlab) -->
+      <img src="kunstlab/web/jop.jpg" alt="Jop Copal">
+      <div class="over__badge">Muzikant &amp; arrangeur</div>
+    </div>
+    <div class="over__text reveal d1">
+      <span class="eyebrow">Over mij</span>
+      <h2 class="title-lg">Mijn <span class="accent">verhaal</span></h2>
+      <!-- VERVANG DIT: jouw persoonlijke tekst -->
+      <p>Mijn naam is Jop Copal en muziek is voor mij veel meer dan noten op een blad. Het is de plek waar ik mezelf kan uiten. Achter de piano voel ik me thuis: daar komen mijn gedachten, mijn herinneringen en mijn geluksgevoel samen in één klank.</p>
+      <p>In dit kunstlab ben ik op zoek gegaan naar de kern van dat gevoel. Wat maakt een melodie nou écht van mij? Hoe vertaal ik een moment van geluk naar een arrangement dat klinkt zoals ik het voel, niet zoals het &ldquo;hoort&rdquo;? Ik onderzoek mijn eigen muzikale handtekening en maak daarin persoonlijke keuzes.</p>
+      <p>Dit project, <em>Joy of Life</em>, is mijn poging om dat onzichtbare gevoel hoorbaar te maken. Een arrangement dat niet perfect hoeft te zijn, maar wel bij mij past.</p>
+      <p class="over__sign">— Jop</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEERVRAAG & PROCES ================= -->
+<section class="section section--blauw" id="leervraag">
+  <div class="wrap">
+    <div class="leervraag-card reveal">
+      <span class="qmark">?</span>
+      <span class="eyebrow">Mijn leervraag</span>
+      <h3>&ldquo;Hoe breng ik mijn eigen geluksgevoel terug in een arrangement volgens mijn eigen visie op muziek?&rdquo;</h3>
+    </div>
+
+    <span class="eyebrow reveal">Het proces</span>
+    <h2 class="title-lg reveal">Van gevoel naar <span class="accent">partituur</span></h2>
+    <p class="lead reveal" style="color:#d6cdbb; margin-bottom:46px;">
+      <!-- VERVANG DIT: korte intro op je proces -->
+      Voor dit kunstlab hield ik een dummy bij: een schrift vol foto's, herinneringen en gedachten over wat mij gelukkig maakt. Van daaruit groeide mijn arrangement in stappen — van een gevoel naar concrete keuzes in klank, ritme en harmonie.
+    </p>
+
+    <div class="proces">
+      <!-- STAP 1 -->
+      <div class="stap reveal">
+        <div class="stap__icoon"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5 6 5c2 0 3 1.5 3 1.5S10 5 12 5s3 1.5 3 1.5S16 5 18 5c3.5 0 5 4 3.5 7C19 16.5 12 21 12 21z"/></svg></div>
+        <span class="stap__nr">STAP 01</span>
+        <h4>Geluksbronnen verzamelen</h4>
+        <!-- VERVANG DIT: beschrijving stap 1 -->
+        <p>In mijn dummy verzamelde ik de momenten waarop ik me het gelukkigst voel: op het podium met mijn toetsen onder mijn vingers, een bandweekend vol muziek en natuur, gezelligheid met familie en vrienden, en de leukste momenten in de klas en in de Efteling.</p>
+      </div>
+      <!-- STAP 2 -->
+      <div class="stap reveal d1">
+        <div class="stap__icoon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <span class="stap__nr">STAP 02</span>
+        <h4>Inspiratie &amp; mindset</h4>
+        <!-- VERVANG DIT: beschrijving stap 2 -->
+        <p>Musicals als Paddington, Wicked en Charlie and the Chocolate Factory zetten me aan het denken over compositie. Tegelijk werkte ik aan mijn mindset: omgaan met tegenslag, doelen stellen en bouwen op autonomie, relatie en competentie.</p>
+      </div>
+      <!-- STAP 3 -->
+      <div class="stap reveal d2">
+        <div class="stap__icoon"><svg viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5"/><path d="M8 7h6M8 11h8M8 15h5"/></svg></div>
+        <span class="stap__nr">STAP 03</span>
+        <h4>Componeren &amp; arrangeren</h4>
+        <!-- VERVANG DIT: beschrijving stap 3 -->
+        <p>Achter de piano thuis componeerde ik de akkoorden, en op mijn eigen stage piano zocht ik naar mijn eigen sound. Daarna arrangeerde ik het stuk voor een elfkoppig orkest: van viool, fluit en saxen tot trombone, drums en twee keys.</p>
+      </div>
+      <!-- STAP 4 -->
+      <div class="stap reveal d3">
+        <div class="stap__icoon"><svg viewBox="0 0 24 24"><path d="M12 2v8"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M8 22h8M12 17v5"/></svg></div>
+        <span class="stap__nr">STAP 04</span>
+        <h4>Vastleggen &amp; laten klinken</h4>
+        <!-- VERVANG DIT: beschrijving stap 4 -->
+        <p>Ik schreef mijn verhaal uit (wat wil ik?) en koppelde mijn muzieklijst aan emoties. Zo bracht ik mijn eigen handtekening terug in de muziek en werd mijn geluksgevoel hoorbaar in het arrangement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- lightbox overlay (gebruikt door de partituren) -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Sluiten">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Vorige">‹</button>
+  <img class="lightbox__img" id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Volgende">›</button>
+  <div class="lightbox__cap" id="lbCap"></div>
+</div>
+
+<!-- ================= MUZIEKFRAGMENT ================= -->
+<section class="section section--blauw" id="muziek">
+  <div class="wrap">
+    <span class="eyebrow reveal">Luister</span>
+    <h2 class="title-lg reveal">Het <span class="accent">muziekfragment</span></h2>
+    <p class="lead reveal" style="color:#d6cdbb; margin-bottom:46px;">Een fragment uit mijn arrangement. Druk op play en laat het geluksgevoel spreken.</p>
+
+    <div class="speler reveal" id="speler">
+      <div class="speler__top">
+        <div class="speler__cover">
+          <span class="ring"></span>
+          <span class="disc">🎵</span>
+        </div>
+        <div class="speler__meta">
+          <!-- VERVANG DIT: titel & ondertitel van je fragment -->
+          <h4>Joy of Life</h4>
+          <span>Arrangement &amp; uitvoering — Jop Copal</span>
+        </div>
+      </div>
+
+      <!-- bewegende golf via Canvas tijdens spelen -->
+      <canvas class="golf" id="golf"></canvas>
+
+      <div class="speler__bar">
+        <span class="tijd" id="tijdNu">0:00</span>
+        <div class="voortgang" id="voortgang">
+          <div class="voortgang__fill" id="vFill"></div>
+          <div class="voortgang__knop" id="vKnop"></div>
+        </div>
+        <span class="tijd" id="tijdTot">0:00</span>
+      </div>
+
+      <div class="speler__controls">
+        <button class="afspeel" id="afspeel" aria-label="Afspelen">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="volume">
+          <svg viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>
+          <input type="range" id="vol" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+        </div>
+      </div>
+
+      <!-- VERVANG DIT: jouw audiobestand (nu echte opname uit /kunstlab) -->
+      <audio id="audio" preload="metadata">
+        <source src="kunstlab/Musical%20Ding.mp3" type="audio/mpeg">
+        <!-- placeholder-alternatief: https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3 -->
+      </audio>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PARTITUREN ================= -->
+<section class="section" id="partituren">
+  <div class="wrap">
+    <span class="eyebrow reveal">Bladmuziek</span>
+    <h2 class="title-lg reveal">De <span class="accent">partituren</span></h2>
+    <p class="lead reveal">Blader horizontaal door de partituur van <em>Joy of Life</em>. Klik op &ldquo;Bekijk groter&rdquo; om een pagina in detail te bekijken.</p>
+    <p class="part-hint reveal">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Sleep of scroll naar rechts voor meer pagina's
+    </p>
+  </div>
+
+  <div class="wrap" style="max-width:1320px;">
+    <!-- VERVANG DIT: jouw partituurpagina's (nu echte scans uit /kunstlab/scores) -->
+    <div class="part-rail reveal" id="partRail">
+      <!-- kaarten worden via JS gegenereerd uit de scorelijst -->
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Volledige partituur: alle pagina's doorbladeren of de PDF openen -->
+    <div class="volledig reveal">
+      <h3>Bekijk de <em>volledige partituur</em></h3>
+      <p>Hierboven staan een paar uitgelichte pagina's. Wil je het hele arrangement zien? Blader door alle pagina's of open de complete partituur als PDF.</p>
+      <div class="volledig__acties">
+        <button class="btn-part btn-part--vol" id="alleParts">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16M4 5v14M4 19h16M20 5v14M9 9h6M9 13h6"/></svg>
+          Blader door alle pagina's
+        </button>
+        <!-- VERVANG DIT: pad naar jouw volledige partituur-PDF -->
+        <a class="btn-part btn-part--pdf" href="kunstlab/Joy%20of%20life%20-%20Full_score.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Open PDF
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DE MAKER ================= -->
+<section class="section section--blauw maker" id="maker">
+  <div class="wrap over">
+    <div class="over__photo reveal">
+      <!-- Foto van de maker / componist (echte foto uit /kunstlab) -->
+      <img src="kunstlab/web/ron.jpg" alt="Ron van Riel, componist">
+      <div class="over__badge">Componist</div>
+    </div>
+    <div class="over__text reveal d1">
+      <span class="eyebrow">De maker</span>
+      <h2 class="title-lg">Ron <span class="accent">van Riel</span></h2>
+      <!-- Vertaalde biografie -->
+      <p>Geboren in 1990, werkt Ron van Riel al bijna zijn halve leven als professioneel componist. Zijn muziek wordt beluisterd in — en is in opdracht gemaakt voor — landen zo divers als Uruguay, Argentinië, Frankrijk, Finland, Duitsland, de Verenigde Staten, China en Zuid-Afrika. Zijn stijlen zijn net zo divers en gevarieerd als zijn klantenkring: van het componeren van muziek voor attracties in pretparken en films tot het arrangeren van volledige concerten voor uiteenlopende bezettingen.</p>
+      <p>Tijdens deze korte maar veelbelovende carrière is Ron zowel in Nederland als daarbuiten genomineerd voor en bekroond met diverse prijzen en onderscheidingen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="footer__logo">Joy of <span>Life</span></div>
+  <p>Een kunstlab muziekproject van Jop Copal</p>
+  <p>&copy; 2026 · Gemaakt met liefde voor muziek</p>
+  <div class="footer__noot">♪ ♫ ♪</div>
+</footer>
+
+<script>
+/* ============================================================
+   1. NAVIGATIE — scroll-effect + mobiel menu
+   ============================================================ */
+const nav = document.getElementById('nav');
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+/* ============================================================
+   2. HERO — zwevende muzieknoten
+   ============================================================ */
+(() => {
+  const hero = document.getElementById('hero');
+  const noten = ['♪','♫','♩','♬','𝄞'];
+  for (let i = 0; i < 9; i++){
+    const n = document.createElement('span');
+    n.className = 'note';
+    n.textContent = noten[Math.floor(Math.random()*noten.length)];
+    n.style.left = Math.random()*100 + '%';
+    n.style.fontSize = (1.4 + Math.random()*2.4) + 'rem';
+    n.style.animationDuration = (9 + Math.random()*10) + 's';
+    n.style.animationDelay = (Math.random()*8) + 's';
+    hero.appendChild(n);
+  }
+})();
+
+/* ============================================================
+   3. SCROLL-ANIMATIES — Intersection Observer
+   ============================================================ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ============================================================
+   4. PARTITUREN — kaarten genereren + "Bekijk groter"
+   ============================================================ */
+// VERVANG DIT: pas de lijst aan met jouw paginanummers / beschrijvingen
+const scores = [
+  { n:'01', titel:'Openingsthema',     tekst:'De eerste maten — hier zet het hoofdmotief in dat het hele stuk draagt.' },
+  { n:'02', titel:'Eerste couplet',    tekst:'De melodie krijgt vorm; linkerhand legt het harmonische fundament.' },
+  { n:'04', titel:'Brug',              tekst:'Een wending in toonsoort die spanning opbouwt richting het refrein.' },
+  { n:'06', titel:'Refrein',          tekst:'Het hoogtepunt — volle akkoorden en een open, blije klank.' },
+  { n:'09', titel:'Tussenspel',        tekst:'Een rustiger passage waarin het thema gevarieerd terugkeert.' },
+  { n:'12', titel:'Doorwerking',       tekst:'Lagen worden gestapeld; dynamiek en kleur nemen toe.' },
+  { n:'15', titel:'Climax',            tekst:'Alles komt samen in de meest uitbundige passage van het arrangement.' },
+  { n:'18', titel:'Slot',              tekst:'Een ingetogen afsluiting die het geluksgevoel laat naklinken.' },
+];
+const rail = document.getElementById('partRail');
+scores.forEach(s => {
+  const src = `kunstlab/scores/score-${s.n}.png`;
+  const card = document.createElement('div');
+  card.className = 'partituur';
+  card.innerHTML = `
+    <div class="partituur__img">
+      <img src="${src}" alt="Partituur pagina ${s.n}" loading="lazy">
+      <button class="partituur__groot" data-src="${src}" data-cap="${s.titel} — pagina ${s.n}">
+        <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        Bekijk groter
+      </button>
+    </div>
+    <div class="partituur__body">
+      <h4>${s.titel}</h4>
+      <p>${s.tekst}</p>
+    </div>`;
+  rail.appendChild(card);
+});
+
+/* ============================================================
+   5. LIGHTBOX — werkt voor galerij én partituren
+   ============================================================ */
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCap = document.getElementById('lbCap');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+const lbClose = document.getElementById('lbClose');
+
+let lbList = [];           // huidige lijst
+let lbIndex = 0;
+let lbNavLinks = false;    // pijltjes tonen?
+
+function openLightbox(list, index, withNav){
+  lbList = list; lbIndex = index; lbNavLinks = withNav;
+  lbPrev.style.display = lbNext.style.display = withNav ? 'grid' : 'none';
+  showLb();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function showLb(){
+  const item = lbList[lbIndex];
+  lbImg.style.opacity = 0;
+  const tmp = new Image();
+  tmp.onload = () => { lbImg.src = item.src; lbImg.style.opacity = 1; };
+  tmp.src = item.src;
+  lbImg.src = item.src;          // direct ook zetten (cache)
+  lbImg.style.opacity = 1;
+  lbCap.textContent = item.cap;
+}
+function closeLightbox(){
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbStep(dir){
+  lbIndex = (lbIndex + dir + lbList.length) % lbList.length;
+  showLb();
+}
+
+// partituur "bekijk groter" openen (enkele afbeelding, geen pijltjes)
+document.querySelectorAll('.partituur__groot').forEach(btn => {
+  btn.addEventListener('click', () => {
+    openLightbox([{ src: btn.dataset.src, cap: btn.dataset.cap }], 0, false);
+  });
+});
+
+// volledige partituur — alle pagina's doorbladeren in de lightbox
+// VERVANG DIT: pas TOTAAL_PAGINAS aan als je aantal partituurpagina's wijzigt
+const TOTAAL_PAGINAS = 18;
+const allePaginas = Array.from({ length: TOTAAL_PAGINAS }, (_, i) => {
+  const nr = String(i + 1).padStart(2, '0');
+  return { src: `kunstlab/scores/score-${nr}.png`, cap: `Volledige partituur — pagina ${i + 1} van ${TOTAAL_PAGINAS}` };
+});
+document.getElementById('alleParts').addEventListener('click', () => openLightbox(allePaginas, 0, true));
+
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', () => lbStep(-1));
+lbNext.addEventListener('click', () => lbStep(1));
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (lbNavLinks && e.key === 'ArrowRight') lbStep(1);
+  if (lbNavLinks && e.key === 'ArrowLeft') lbStep(-1);
+});
+
+/* ============================================================
+   6. MUZIEKSPELER — eigen controls + canvas-golf
+   ============================================================ */
+const audio = document.getElementById('audio');
+const speler = document.getElementById('speler');
+const afspeel = document.getElementById('afspeel');
+const vFill = document.getElementById('vFill');
+const vKnop = document.getElementById('vKnop');
+const voortgang = document.getElementById('voortgang');
+const tijdNu = document.getElementById('tijdNu');
+const tijdTot = document.getElementById('tijdTot');
+const vol = document.getElementById('vol');
+const golf = document.getElementById('golf');
+
+const playIcon = '<path d="M8 5v14l11-7z"/>';
+const pauseIcon = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+
+function fmt(t){
+  if (isNaN(t)) return '0:00';
+  const m = Math.floor(t/60), s = Math.floor(t%60);
+  return m + ':' + (s<10?'0':'') + s;
+}
+
+function toonDuur(){ if (!isNaN(audio.duration)) tijdTot.textContent = fmt(audio.duration); }
+audio.addEventListener('loadedmetadata', toonDuur);
+audio.addEventListener('durationchange', toonDuur);
+audio.addEventListener('canplay', toonDuur);
+if (audio.readyState >= 1) toonDuur();   // metadata al beschikbaar (cache)
+audio.volume = vol.value;
+
+afspeel.addEventListener('click', () => {
+  if (audio.paused){ audio.play(); } else { audio.pause(); }
+});
+audio.addEventListener('play', () => {
+  speler.classList.add('playing');
+  afspeel.querySelector('svg').innerHTML = pauseIcon;
+});
+audio.addEventListener('pause', () => {
+  speler.classList.remove('playing');
+  afspeel.querySelector('svg').innerHTML = playIcon;
+});
+audio.addEventListener('timeupdate', () => {
+  const p = (audio.currentTime / audio.duration) * 100 || 0;
+  vFill.style.width = p + '%';
+  vKnop.style.left = p + '%';
+  tijdNu.textContent = fmt(audio.currentTime);
+});
+audio.addEventListener('ended', () => {
+  speler.classList.remove('playing');
+  afspeel.querySelector('svg').innerHTML = playIcon;
+});
+
+// klikbare voortgangsbalk (klik + sleep)
+function seek(e){
+  const rect = voortgang.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const ratio = Math.min(1, Math.max(0, x / rect.width));
+  if (!isNaN(audio.duration)) audio.currentTime = ratio * audio.duration;
+}
+let seeking = false;
+voortgang.addEventListener('mousedown', (e) => { seeking = true; seek(e); });
+window.addEventListener('mousemove', (e) => { if (seeking) seek(e); });
+window.addEventListener('mouseup', () => { seeking = false; });
+voortgang.addEventListener('touchstart', (e) => { seeking = true; seek(e); }, {passive:true});
+voortgang.addEventListener('touchmove', (e) => { if (seeking) seek(e); }, {passive:true});
+voortgang.addEventListener('touchend', () => { seeking = false; });
+
+// volume
+vol.addEventListener('input', () => { audio.volume = vol.value; });
+
+// canvas-golf animatie (pulsende golven tijdens spelen)
+const gctx = golf.getContext('2d');
+function sizeGolf(){
+  const r = golf.getBoundingClientRect();
+  golf.width = r.width * devicePixelRatio;
+  golf.height = r.height * devicePixelRatio;
+  gctx.scale(devicePixelRatio, devicePixelRatio);
+}
+window.addEventListener('resize', () => { gctx.setTransform(1,0,0,1,0,0); sizeGolf(); });
+sizeGolf();
+
+let phase = 0;
+function tekenGolf(){
+  const w = golf.width / devicePixelRatio;
+  const h = golf.height / devicePixelRatio;
+  gctx.clearRect(0,0,w,h);
+  const playing = !audio.paused;
+  const bars = Math.floor(w / 7);
+  const mid = h/2;
+  for (let i = 0; i < bars; i++){
+    const x = i * 7 + 3;
+    // amplitude beweegt alleen als er gespeeld wordt
+    const base = Math.sin(i*0.4 + phase) * Math.sin(i*0.13 + phase*0.6);
+    const amp = playing ? (0.25 + Math.abs(base)) : 0.12;
+    const bh = amp * (h*0.42);
+    const grad = gctx.createLinearGradient(0, mid-bh, 0, mid+bh);
+    grad.addColorStop(0, '#f7d488');
+    grad.addColorStop(1, '#d2602e');
+    gctx.fillStyle = grad;
+    gctx.globalAlpha = playing ? 0.95 : 0.4;
+    roundBar(x, mid-bh, 4, bh*2);
+    gctx.fill();
+  }
+  if (playing) phase += 0.12;
+  requestAnimationFrame(tekenGolf);
+}
+function roundBar(x,y,w,h){
+  const r = w/2;
+  gctx.beginPath();
+  gctx.moveTo(x, y+r);
+  gctx.arcTo(x, y, x+r, y, r);
+  gctx.arcTo(x+w, y, x+w, y+r, r);
+  gctx.lineTo(x+w, y+h-r);
+  gctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+  gctx.arcTo(x, y+h, x, y+h-r, r);
+  gctx.closePath();
+}
+tekenGolf();
+</script>
+</body>
+</html>
