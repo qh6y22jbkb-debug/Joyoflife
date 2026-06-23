@@ -408,6 +408,28 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
   .speler__controls{ flex-wrap:wrap; gap:18px; }
 }
 
+/* ---- Opbouw van het stuk ---- */
+.opbouw{ margin-top:48px; }
+.opbouw__titel{ font-family:var(--serif); font-size:1.25rem; color:var(--goud-licht); margin-bottom:20px; }
+.opbouw__lijst{ list-style:none; padding:0; margin:0; counter-reset:stap; display:flex; flex-direction:column; gap:14px; }
+.opbouw__lijst li{
+  counter-increment:stap;
+  display:grid; grid-template-columns:2em 1fr;
+  align-items:baseline; gap:0 14px;
+  padding:14px 18px; border-radius:10px;
+  background:rgba(255,255,255,.06); border-left:3px solid var(--goud);
+}
+.opbouw__lijst li::before{
+  content:counter(stap);
+  font-family:var(--serif); font-size:1rem; color:var(--goud);
+  font-weight:700; line-height:1.4;
+}
+.opbouw__lijst strong{ color:var(--creme); font-size:1rem; grid-column:2; }
+.opbouw__lijst span{ color:#b0a88e; font-size:.92rem; grid-column:2; line-height:1.5; }
+@media (max-width:560px){
+  .opbouw__lijst li{ grid-template-columns:1.6em 1fr; padding:12px 14px; }
+}
+
 /* ============================================================
    PARTITUREN — horizontaal scrollbaar
    ============================================================ */
@@ -501,7 +523,7 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
     <li><a href="#leervraag">Leervraag</a></li>
     <li><a href="#muziek">Muziek</a></li>
     <li><a href="#partituren">Partituren</a></li>
-    <li><a href="#maker">De maker</a></li>
+    <li><a href="#maker">Professionele maker</a></li>
   </ul>
 </nav>
 
@@ -652,6 +674,20 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
         <!-- placeholder-alternatief: https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3 -->
       </audio>
     </div>
+
+    <div class="opbouw reveal">
+      <h3 class="opbouw__titel">Opbouw van het stuk</h3>
+      <ol class="opbouw__lijst">
+        <li><strong>Openingsthema</strong><span>Ik wilde mijn nummer graag rustig opbouwen. In dit stuk zit eigenlijk de rustige opbouw.</span></li>
+        <li><strong>Eerste couplet</strong><span>Er worden meerdere instrumenten toegevoegd. Ik vind dit zelf klinken als de klank van hoop.</span></li>
+        <li><strong>Brug</strong><span>Er kunnen ook tegenslagen in je leven zitten. Het is aan jou hoe je hiermee omgaat.</span></li>
+        <li><strong>Refrein</strong><span>Feelgood melodie en volle, open en blije akkoorden om dat geluksgevoel mooi weg te zetten.</span></li>
+        <li><strong>Tussenspel</strong><span>Letterlijk de highs in het leven.</span></li>
+        <li><strong>Doorwerking</strong><span>Herhaling van het refrein.</span></li>
+        <li><strong>Climax</strong><span>Grote bombastische klanken. Hier komt de samenklank van blazers het mooist tot zijn recht.</span></li>
+        <li><strong>Slot</strong><span>Een kort slot waarin het stuk tot een climax komt.</span></li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -703,11 +739,11 @@ h1,h2,h3{ font-family:var(--serif); line-height:1.05; font-weight:900; }
       <div class="over__badge">Componist</div>
     </div>
     <div class="over__text reveal d1">
-      <span class="eyebrow">De maker</span>
+      <span class="eyebrow">Professionele maker</span>
       <h2 class="title-lg">Ron <span class="accent">van Riel</span></h2>
       <!-- Vertaalde biografie -->
-      <p>Geboren in 1990, werkt Ron van Riel al bijna zijn halve leven als professioneel componist. Zijn muziek wordt beluisterd in — en is in opdracht gemaakt voor — landen zo divers als Uruguay, Argentinië, Frankrijk, Finland, Duitsland, de Verenigde Staten, China en Zuid-Afrika. Zijn stijlen zijn net zo divers en gevarieerd als zijn klantenkring: van het componeren van muziek voor attracties in pretparken en films tot het arrangeren van volledige concerten voor uiteenlopende bezettingen.</p>
-      <p>Tijdens deze korte maar veelbelovende carrière is Ron zowel in Nederland als daarbuiten genomineerd voor en bekroond met diverse prijzen en onderscheidingen.</p>
+      <p>Ron van Riel werkt al bijna zijn halve leven als professioneel componist. Zijn muziek wordt beluisterd en gemaakt voor landen zo divers als Uruguay, Argentinië, Frankrijk, Finland, Duitsland, de Verenigde Staten, China en Zuid-Afrika. Zijn stijlen zijn erg divers: van het componeren van muziek voor attracties in pretparken en films tot het arrangeren van volledige concerten voor uiteenlopende bezettingen.</p>
+      <p>Persoonlijk ken ik Ron van het Orkest van de toneelgroep V.O.S. (Vereniging Oisterwijkse Spelers). Waar Ron hoornist is en ik toetsenist. Ron is tevens ook de arrangeur. Hij zorgt er ieder jaar weer voor dat iedereen de juiste partijen heeft waardoor de muziek echt samen komt. Ron heeft mij tijdens onze schrijfsessie laten inzien dat er meerdere wegen zijn om tot een mooi stuk te komen. Dat heeft mij een betere muzikant gemaakt en dat zal ik niet vergeten.</p>
     </div>
   </div>
 </section>
